@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PaidOnce</title>
+<style>
+:root{--bg:#f4f1ea;--panel:#fffdf8;--ink:#1f2a2e;--mute:#667075;--line:#d9d3c5;--pay:#9c2f1f;--ok:#22605a;--root:#c9851b;--back:#22605a}
+@media (prefers-color-scheme:dark){:root{--bg:#14191b;--panel:#1c2326;--ink:#e8e4d9;--mute:#98a3a7;--line:#344044;--pay:#f08a74;--ok:#79c7bd;--root:#e9b04f;--back:#79c7bd}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 ui-sans-serif,system-ui,sans-serif}
+.top{display:flex;flex-wrap:wrap;gap:6px 20px;align-items:baseline;padding:18px 24px;border-bottom:1px solid var(--line)}
+h1{font:600 22px/1.1 Georgia,serif;margin:0}
+.top p{margin:0;color:var(--mute)} #status{margin-left:auto;font-size:13px}
+main{display:grid;grid-template-columns:290px minmax(0,1fr);gap:24px;padding:20px 24px}
+input{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:inherit;font:inherit}
+#inbox{margin-top:10px;max-height:72vh;overflow:auto;display:grid;gap:4px;align-content:start}
+button{font:inherit;color:inherit;cursor:pointer}
+.ticket{display:grid;text-align:left;border:0;border-left:3px solid transparent;background:none;padding:7px 10px}
+.ticket b{font:12px ui-monospace,monospace;color:var(--mute)} .ticket span{font-size:14px}
+.ticket:hover,.ticket.on{background:var(--panel);border-left-color:var(--root)}
+.quote{font:italic 19px/1.4 Georgia,serif;margin:0 0 4px;max-width:60ch} .near{margin:0 0 16px;color:var(--mute);font-size:13px}
+.link{border:0;background:none;padding:0 6px 0 0;text-decoration:underline;font:12px ui-monospace,monospace;color:var(--mute)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin-bottom:18px}
+.card header{display:flex;flex-wrap:wrap;gap:6px 16px;color:var(--mute);font-size:13px} .mono{font-family:ui-monospace,monospace} .root{color:var(--root)}
+.do{font:600 25px/1.25 Georgia,serif;margin:8px 0 4px;color:var(--ok)} .do.pay{color:var(--pay)} .card p{margin:0 0 12px;max-width:66ch}
+dl{display:flex;flex-wrap:wrap;gap:8px 28px;margin:0 0 12px} dt{color:var(--mute);font-size:12px} dd{margin:0;font-variant-numeric:tabular-nums}
+.act{border:1px solid var(--line);background:var(--bg);border-radius:6px;padding:7px 12px;margin:0 6px 6px 0} .act:hover{border-color:var(--root)}
+.scroll{overflow-x:auto;margin:8px 0} svg{width:100%;display:block}
+.node rect{fill:var(--bg);stroke:var(--line)} .node text{font:11px ui-monospace,monospace;fill:var(--ink)} .node .sub{fill:var(--mute);font-size:10px}
+.node.BankLine rect{stroke:var(--pay)} .node.Refund rect,.node.Reversal rect{stroke:var(--back);stroke-width:2} .node.isroot rect{stroke:var(--root);stroke-width:2.5}
+.edge{fill:none;stroke:var(--line);stroke-width:1.4} .edge.root{stroke:var(--root);stroke-width:2.2} .edge.back{stroke:var(--back);stroke-width:2}
+.blast{border-top:1px solid var(--line);padding-top:14px} h3{font:600 17px/1.3 Georgia,serif;margin:0 0 2px}
+.dots{display:flex;flex-wrap:wrap;gap:7px} .dot{display:inline-block;width:20px;height:20px;padding:0;border-radius:50%;border:2px solid var(--root);background:var(--root)} .dot.silent{background:none}
+.key{font-size:13px;color:var(--mute)} .key .dot{width:11px;height:11px;vertical-align:-1px}
+table{border-collapse:collapse;margin-top:8px} th,td{text-align:left;padding:4px 18px 4px 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums} th{font-weight:500;color:var(--mute)} .cost td{color:var(--pay)}
+:focus-visible{outline:2px solid var(--root);outline-offset:2px}
+@media (max-width:800px){main{grid-template-columns:minmax(0,1fr);padding:16px}#inbox{max-height:30vh}#status{margin-left:0}.top{padding:16px}}
+</style>
+</head>
+<body>
+<div class="top"><h1>PaidOnce</h1><p>Why was I charged twice, and is it safe to refund?</p><p id="status">Loading Relate…</p></div>
+<main>
+<aside><input id="q" placeholder="Search tickets, e.g. do baar" aria-label="Search tickets"><div id="inbox"></div></aside>
+<section>
+<div id="ticket"></div>
+<div id="cards"></div>
+<article class="card"><h3>What would have stopped this?</h3><p>Replays the whole month on a scratch copy of the graph with one fix in place.</p><div id="fixes"></div><div id="whatif"></div></article>
+<p class="near">All data is synthetic. <button class="link" id="reset" type="button">Reset the graph</button></p>
+</section>
+</main>
+<script type="module" src="./app.js"></script>
+</body>
+</html>

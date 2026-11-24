@@ -1,0 +1,38 @@
+{
+  "name": "paidonce",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "generate": "tsx src/generate.ts",
+    "embed": "tsx scripts/embed.ts",
+    "build:store": "tsx src/build.ts",
+    "paidonce": "tsx src/cli.ts",
+    "eval": "tsx src/eval.ts",
+    "mcp": "tsx src/mcp.ts",
+    "build:web": "tsx scripts/web.ts",
+    "demo": "tsx scripts/web.ts --serve",
+    "test:mutation": "tsx scripts/mutate.ts",
+    "embedding-check": "tsx scripts/embedding-check.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "@relate/relate": "^1.2.0",
+    "tsx": "^4.23.15",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@huggingface/transformers": "^4.3.2",
+    "@relate/relate-wasm": "^1.2.0",
+    "@types/node": "^20.19.43",
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.12"
+  }
+}

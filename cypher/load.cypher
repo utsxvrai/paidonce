@@ -1,0 +1,17 @@
+UNWIND $customers AS r CREATE (:Customer {id: r.id, name: r.name});
+UNWIND $components AS r CREATE (:Component {id: r.id});
+UNWIND $releases AS r CREATE (:Release {id: r.id, service: r.service, at: datetime(r.at)});
+UNWIND $qrs AS r CREATE (:Qr {id: r.id, singleUse: r.singleUse});
+UNWIND $outages AS r MATCH (c:Component {id: r.component}) CREATE (:Outage {id: r.id, start: datetime(r.start), end: datetime(r.end)})-[:HIT]->(c);
+UNWIND $orders AS r MATCH (c:Customer {id: r.customer}) CREATE (c)-[:PLACED]->(:Order {id: r.id, amount: r.amount, at: datetime(r.at)});
+UNWIND $attempts AS r MATCH (o:Order {id: r.order}), (rel:Release {id: r.release}) CREATE (o)-[:HAS_ATTEMPT]->(a:Attempt {id: r.id, key: r.key, at: datetime(r.at), shown: r.shown, shownAt: datetime(r.shownAt), auto: r.auto})-[:RAN_ON]->(rel);
+UNWIND $attempts AS r WITH r WHERE r.qr IS NOT NULL MATCH (a:Attempt {id: r.id}), (q:Qr {id: r.qr}) CREATE (a)-[:SCANNED]->(q);
+UNWIND $txns AS r MATCH (a:Attempt {id: r.attempt}), (c:Component {id: r.component}) CREATE (a)-[:CREATED]->(t:Txn {id: r.id, amount: r.amount, status: r.status, at: datetime(r.at), completedAt: CASE WHEN r.completedAt IS NULL THEN null ELSE datetime(r.completedAt) END, payerApp: r.payerApp})-[:ROUTED_VIA]->(c);
+UNWIND $bankLines AS r MATCH (t:Txn {id: r.txn}) CREATE (:BankLine {id: r.id, amount: r.amount, at: datetime(r.at)})-[:CLEARS]->(t);
+UNWIND $webhooks AS r MATCH (t:Txn {id: r.txn}), (rel:Release {id: r.release}) CREATE (t)<-[:REPORTS]-(w:Webhook {id: r.id, eventId: r.eventId, at: datetime(r.at)})-[:HANDLED_BY]->(rel);
+UNWIND $ledger AS r MATCH (w:Webhook {id: r.webhook}), (o:Order {id: r.order}) CREATE (w)-[:POSTED]->(:LedgerEntry {id: r.id, amount: r.amount})-[:CREDITS]->(o);
+UNWIND $refunds AS r MATCH (t:Txn {id: r.txn}) CREATE (:Refund {id: r.id, amount: r.amount, status: r.status, at: datetime(r.at)})-[:RETURNS]->(t);
+UNWIND $reversals AS r MATCH (t:Txn {id: r.txn}) CREATE (:Reversal {id: r.id, amount: r.amount, status: r.status, at: datetime(r.at)})-[:RETURNS]->(t);
+UNWIND $tickets AS r MATCH (c:Customer {id: r.customer}) CREATE (c)-[:RAISED]->(:Ticket {id: r.id, text: r.text, at: datetime(r.at)});
+UNWIND $tickets AS r WITH r WHERE r.order IS NOT NULL MATCH (t:Ticket {id: r.id}), (o:Order {id: r.order}) CREATE (t)-[:MENTIONS]->(o);
+UNWIND $vectors AS r MATCH (t:Ticket {id: r.id}) SET t.vec = r.vec;
