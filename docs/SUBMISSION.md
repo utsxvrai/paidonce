@@ -4,6 +4,10 @@
 
 **Tagline:** Charged twice? See why, whether a refund is safe right now, and who else was hit but never complained.
 
+**Repo:** https://github.com/utsxvrai/paidonce
+
+**Live demo:** https://utsxvrai.github.io/paidonce/
+
 **Relate mode:** Single file
 
 ## Inspiration

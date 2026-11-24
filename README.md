@@ -2,6 +2,8 @@
 
 **A customer says "I was charged twice". PaidOnce shows why, says whether a refund is safe right now, and finds everyone else hit by the same cause who has not complained yet.**
 
+**[Live demo](https://utsxvrai.github.io/paidonce/)** (runs in your browser, nothing to install)
+
 > All data in this repository is synthetic. No real customer, bank, or payment appears in it.
 
 ![A ticket traced through the payment graph to an outage, with the refund decision above it](docs/screenshot.png)
