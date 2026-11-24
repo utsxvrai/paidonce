@@ -1,6 +1,6 @@
 # Demo video script (target 1:45, hard limit 2:00)
 
-Record the screen at 1440x900 with `npm run demo` open and a terminal ready. Speak in your own voice. No music.
+This is the outline. The finished video is 1:24, recorded from the live demo at 1920x1080, with no music.
 
 | Time | Screen | Say |
 |---|---|---|

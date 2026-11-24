@@ -120,7 +120,7 @@ On 96 tickets, copying the action of the most similar ticket is right 45 times. 
 ## Disclosure
 
 - **Started:** 24 November 2026, inside the contest period. No earlier code is reused.
-- **AI tools:** built with Claude Code, which wrote most of the code, tests and documentation under the author's direction and review.
+- **AI tools:** built with Claude Code, which wrote most of the code, tests and documentation under the author's direction and review. The demo video is narrated with the author's own AI voice clone (ElevenLabs), with the screen recording and edit scripted by Claude Code using Playwright and ffmpeg.
 - **Third-party:** Relate 1.2.0 (Apache-2.0), the MCP TypeScript SDK, Zod, tsx, esbuild, Vitest, TypeScript, Transformers.js with `Xenova/multilingual-e5-small` (build time only). See each package for its licence.
 - Not affiliated with or endorsed by Neo4j.
 
