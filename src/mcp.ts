@@ -5,6 +5,7 @@ import { readCypher } from "./cypher.js";
 import { blastRadius, explainTicket, findings, FIXES, searchTickets, similarTickets, trail, whatIf } from "./engine.js";
 import { todo, why } from "./format.js";
 import { openScratch, openStore } from "./open.js";
+import { english } from "./gloss.js";
 
 const server = new McpServer({ name: "paidonce", version: "0.1.0" });
 const MAX_ROWS = 100;
@@ -15,7 +16,7 @@ const explain = (f: ReturnType<typeof findings>[number]) => ({ ...f, why: why(f)
 server.registerTool("find_tickets", {
   description: "Find support tickets by words. Use this first when you only have a complaint.",
   inputSchema: { words: z.string() },
-}, ({ words }) => reply(searchTickets(g(), readCypher, words)));
+}, ({ words }) => reply(searchTickets(g(), readCypher, words).map((h) => ({ ...h, english: english(h.text) }))));
 
 server.registerTool("similar_tickets", {
   description: "Tickets close in meaning to one ticket. Candidates only: never decide a refund from similarity.",
@@ -29,7 +30,7 @@ server.registerTool("explain_dispute", {
   const graph = g();
   if (id.startsWith("ORD-")) return reply(findings(graph, readCypher, id).map(explain));
   const e = explainTicket(graph, readCypher, id);
-  return reply(e ? { ...e, findings: e.findings.map(explain) } : { error: `No ticket ${id}` });
+  return reply(e ? { ...e, english: english(e.text), findings: e.findings.map(explain) } : { error: `No ticket ${id}` });
 });
 
 server.registerTool("evidence_trail", {

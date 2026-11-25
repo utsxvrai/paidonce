@@ -6,6 +6,7 @@ import { rupees, todo, why } from "../src/format.js";
 import type { Dataset, Graph } from "../src/types.js";
 import { wrapWasm } from "../src/wasm.js";
 import { readCypher } from "./cypher.js";
+import { english } from "../src/gloss.js";
 
 type Child = Node | string;
 const h = (tag: string, attrs: Record<string, string> = {}, ...kids: Child[]): HTMLElement => {
@@ -38,7 +39,7 @@ const disputes = data.tickets
 
 function inbox(ids: { id: string; text: string }[]): void {
   $("inbox").replaceChildren(...ids.map(({ id, text }) =>
-    on(h("button", { class: id === selected ? "ticket on" : "ticket", type: "button" }, h("b", {}, id), h("span", {}, text)), () => show(id))));
+    on(h("button", { class: id === selected ? "ticket on" : "ticket", type: "button" }, h("b", {}, id), h("span", {}, text), ...(english(text) ? [h("small", {}, english(text) ?? "")] : [])), () => show(id))));
 }
 
 const COLUMNS: Record<string, number> = {
@@ -137,7 +138,8 @@ function show(id: string): void {
   const e = explainTicket(graph, readCypher, id);
   if (!e) return;
   const near = similarTickets(graph, readCypher, id).slice(0, 4);
-  $("ticket").replaceChildren(h("p", { class: "quote" }, e.text),
+  const en = english(e.text);
+  $("ticket").replaceChildren(h("p", { class: "quote" }, e.text), ...(en ? [h("p", { class: "gloss" }, `In English: ${en}`)] : []),
     h("p", { class: "near" }, "Similar wording: ", ...near.map((n) => on(h("button", { type: "button", class: "link" }, n.ticket), () => show(n.ticket)))));
   const fs = e.findings.filter((f) => f.cause !== "SINGLE_CHARGE");
   $("cards").replaceChildren(...(fs.length ? fs : e.findings).map(card));

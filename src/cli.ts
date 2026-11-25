@@ -2,6 +2,7 @@ import { readCypher } from "./cypher.js";
 import { blastRadius, explainTicket, findings, FIXES, searchTickets, similarTickets, trail, whatIf, type Fix } from "./engine.js";
 import { rupees, summary } from "./format.js";
 import { openScratch, openStore } from "./open.js";
+import { english } from "./gloss.js";
 import { CAUSES } from "./types.js";
 
 const USAGE = `paidonce <command>
@@ -33,7 +34,8 @@ function run(cmd: string | undefined, args: string[]): string {
       if (arg.startsWith("ORD-")) return findings(g, readCypher, arg).map(summary).join("\n") || `No order ${arg}`;
       const e = explainTicket(g, readCypher, arg);
       if (!e) return `No ticket ${arg}`;
-      return [`${e.ticket} from ${e.customer}: "${e.text}"`, "", ...(e.findings.length ? e.findings.map(summary) : ["No order found for this ticket."])].join("\n");
+      const en = english(e.text);
+      return [`${e.ticket} from ${e.customer}: "${e.text}"`, ...(en ? [`  In English: ${en}`] : []), "", ...(e.findings.length ? e.findings.map(summary) : ["No order found for this ticket."])].join("\n");
     }
     case "trail":
       return trail(g, readCypher, arg).edges.map((e) => `${e.from} -[${e.type}]-> ${e.to}`).join("\n") || `No order ${arg}`;

@@ -19,6 +19,8 @@ Support teams answer "I was charged twice" by reading the ledger, the gateway, t
 
 And each ticket is usually one visible case of a bigger problem: an outage, a bad release, a reusable QR code.
 
+**Why UPI and Hinglish?** The sample data models UPI, India's real-time bank-to-bank payment system, where a payment can show as failed on screen and still go through later. Many Indian customers write to support in Hinglish (Hindi in Latin script), so some sample tickets do too. PaidOnce keeps the customer's words and shows a fixed English translation beside them. Ticket similarity uses a multilingual embedding model, but it only suggests tickets to open; it never decides a refund.
+
 The relationships that matter are the ones between systems that do not know about each other: a retry and the timeout before it, a webhook and the release that handled it, a gateway and its outage, a debit and the reversal coming back.
 
 ## How it uses Relate
