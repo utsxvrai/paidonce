@@ -8,6 +8,8 @@
 
 **Live demo:** https://utsxvrai.github.io/paidonce/
 
+**Demo video:** https://youtu.be/PqckVk8gdic
+
 **Relate mode:** Single file
 
 ## Inspiration
